@@ -57,6 +57,31 @@ function checkPasswordMatch(input1, input2){
     }
 }
 
+//Check age
+function checkAge(input, min, max) {
+    //si no es un número muestro error.
+    if (isNaN(input.value)) {
+        showError(input, "La edad debe ser un número");
+    } else if (input.value < min || input.value > max) {
+        showError(input, `La edad debe estar entre ${min} y ${max}.`);
+    }
+}
+
+//Check URL
+// 
+function checkUrl(input) {
+    console.log(input.value);
+    if (!Boolean(new URI(input.value).scheme())) {
+        showError(input, "El esquema introducido no es válido")
+    } else if (!Boolean(new URI(input.value).domain())) {
+        showError(input, "El dominio introducido no es válido")
+    } else if (!Boolean(new URI(input.value).directory())) {
+        showError(input, "El directorio introducido no es válido")
+    } else if (!Boolean(new URI(input.value).filename())) {
+        showError(input, "El archivo introducido no es válido")
+    }
+}
+
 // gets the field name
 function getFieldName(input){
     return input.id.charAt(0).toUpperCase() + input.id.slice(1);
@@ -66,10 +91,12 @@ function getFieldName(input){
 form.addEventListener('submit', function(e) {
     e.preventDefault();
 
-    checkRequired([username, email, password, password2]);
+    checkRequired([username, email, password, password2, edad, url]);
     checkLength(username, 3, 15);
     checkLength(password, 6, 25);
+    checkAge(edad, 0, 999);
     checkEmail(email);
+    checkUrl(url);
 
     checkPasswordMatch(password, password2);
 
